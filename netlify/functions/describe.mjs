@@ -1,11 +1,16 @@
 export default async (req) => {
   const { title, author } = await req.json();
 
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    return new Response("API key not configured.", { status: 500 });
+  }
+
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": Netlify.env.get("ANTHROPIC_API_KEY"),
+      "x-api-key": apiKey,
       "anthropic-version": "2023-06-01"
     },
     body: JSON.stringify({
