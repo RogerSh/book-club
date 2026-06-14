@@ -986,7 +986,11 @@ function fetchDesc(title, author, el){
   // Then fetch a richer live AI description in the background
   fetch('/api/describe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title,author})})
     .then(r=>r.ok?r.text():null)
-    .then(text=>{if(text&&text.trim()){el.textContent=text;el.className='book-desc';}})
+    .then(text=>{
+      if(text&&text.trim()&&text!=='No description available.'){
+        el.textContent=text;el.className='book-desc';
+      }
+    })
     .catch(()=>{});
 }
 
